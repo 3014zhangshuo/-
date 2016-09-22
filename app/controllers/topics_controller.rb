@@ -60,6 +60,12 @@ class TopicsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  def downvote
+    @topic = Topic.find(params[:id])
+    @topic.votes.last.try(:destroy)
+    redirect_to(topics_path)
+end
+
 def upvote
   @topic = Topic.find(params[:id])
   @topic.votes.create
