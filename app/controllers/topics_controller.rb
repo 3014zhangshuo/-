@@ -1,11 +1,8 @@
 class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
-
-  # GET /topics
-  # GET /topics.json
-  def index
-    @topics = Topic.all
-  end
+def change
+    add_column :topics, :count, :integer, default:0
+end
 
   # GET /topics/1
   # GET /topics/1.json
@@ -62,8 +59,12 @@ class TopicsController < ApplicationController
   end
   def downvote
     @topic = Topic.find(params[:id])
-    @topic.votes.last.try(:destroy)
-    redirect_to(topics_path)
+    if @topic.votes.count > 0
+      @topic.votes.first.destroy
+    else
+      flash[:notice] = "The vote already is 0"
+end
+      redirect_to(topics_path)
 end
 
 def upvote
@@ -71,6 +72,19 @@ def upvote
   @topic.votes.create
   redirect_to(topics_path)
 end
+
+def index
+  @topics = Topic.all.sort_by{|vote|vote.votes.count}.reverse
+end
+def about
+
+end
+end
+
+
+
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_topic
@@ -81,4 +95,3 @@ end
     def topic_params
       params.require(:topic).permit(:title, :description)
     end
-end

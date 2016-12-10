@@ -1,7 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Topics</h1>
-
 <table>
   <thead>
     <tr>
@@ -26,3 +25,4 @@
 <br>
 
 <%= link_to 'New Topic', new_topic_path %>
+<%= link_to 'About', about_topic_path(@topics.first) %>
